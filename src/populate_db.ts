@@ -45,15 +45,23 @@ async function createQuestions() {
 }
 
 function getDataFromSheet() {
-    // const wb = xlsx.readFile('./src/data/DSA-revision-sheet.xlsx');
+
     const wb = xlsx.readFile('./src/data/flash-dsa-data.xlsx');
     const ws = wb.Sheets['striver DSA'];
 
     const jsondata = xlsx.utils.sheet_to_json(ws, { raw: true });
     // console.log(jsondata);
-    const dataWithLinks = jsondata.filter((row: any) => row && row?.question && row?.question !== "question");
+    const filteredData = jsondata.filter((row: any) => row && row?.question && row?.question !== "question");
 
-    // console.log(dataWithLinks)
+    console.log(filteredData)
 
-    return dataWithLinks;
+    // pbcopy(filteredData);
+
+    return filteredData;
+}
+
+function pbcopy(data: any) {
+    var proc = require('child_process').spawn('clip');
+    proc.stdin.write(JSON.stringify(data));
+    proc.stdin.end();
 }
